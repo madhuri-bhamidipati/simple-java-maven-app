@@ -1,28 +1,36 @@
 pipeline {
     agent { label 'mvnserver' }
-    options {
-        skipStagesAfterUnstable()
-    }
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                sh 'mvn /usr/bin/mvn -B -DskipTests clean package'
+                // Checkout code from GitHub
+                git url: 'https://github.com/madhuri-bhamidipati/simple-java-maven-app.git', branch: 'master'
             }
         }
-        stage('Test') {
+
+        stage('Build') {
             steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
+                // Go inside src folder where pom.xml is
+                dir('src') {
+                    sh '/usr/bin/mvn -B -DskipTests clean package'
                 }
             }
         }
-        stage('Deliver') { 
+
+        stage('Test') {
             steps {
-                sh './jenkins/scripts/deliver.sh' 
+                dir('src') {
+                    sh '/usr/bin/mvn test'
+                }
+            }
+        }
+
+        stage('Deliver') {
+            steps {
+                echo 'Deliver stage placeholder'
             }
         }
     }
 }
+
