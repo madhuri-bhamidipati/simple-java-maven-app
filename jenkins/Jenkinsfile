@@ -1,5 +1,9 @@
 pipeline {
     agent { label 'mvnserver' }  // your agent label
+    environment {
+        MAVEN_HOME = '/opt/apache-maven-3.9.9'
+        PATH = "${MAVEN_HOME}/bin:${env.PATH}" // prepend Maven bin to PATH
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -8,7 +12,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh '/usr/bin/mvn -B -DskipTests clean package'
+                sh 'mvn -B -DskipTests clean package'
             }
         }
         stage('Test') {
@@ -23,4 +27,3 @@ pipeline {
         }
     }
 }
-
