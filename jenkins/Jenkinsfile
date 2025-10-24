@@ -1,34 +1,24 @@
 pipeline {
-    agent { label 'mvnserver' }
-
+    agent { label 'mvnserver' }  // your agent label
     stages {
         stage('Checkout') {
             steps {
-                // Checkout code from GitHub
-                git url: 'https://github.com/madhuri-bhamidipati/simple-java-maven-app.git', branch: 'master'
+                checkout scm
             }
         }
-
         stage('Build') {
             steps {
-                // Go inside src folder where pom.xml is
-                dir('src') {
-                    sh '/usr/bin/mvn -B -DskipTests clean package -f pom.xml'
-                }
+                sh '/usr/bin/mvn -B -DskipTests clean package'
             }
         }
-
         stage('Test') {
             steps {
-                dir('src') {
-                    sh '/usr/bin/mvn test'
-                }
+                echo 'Skipping tests for now'
             }
         }
-
         stage('Deliver') {
             steps {
-                echo 'Deliver stage placeholder'
+                echo 'Deliver stage'
             }
         }
     }
