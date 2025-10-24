@@ -13,7 +13,7 @@ pipeline {
             steps {
                 // Go inside src folder where pom.xml is
                 dir('src') {
-                    sh '/usr/bin/mvn -B -DskipTests clean package'
+                    sh '/usr/bin/mvn -B -DskipTests clean package -f pom.xml'
                 }
             }
         }
